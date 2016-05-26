@@ -1,0 +1,5 @@
+<form name="inputForm" ng-controller="InputController as inputCtrl" ng-submit="inputForm.$valid && submit()">
+  <p>First number: <input type="text" ng-pattern="/^(-|\+)?\d+(\.\d+)?$/" ng-model="firstNumber" required></p>
+  <p>Second number: <input type="text" ng-pattern="/^(-|\+)?\d+(\.\d+)?$/" ng-model="secondNumber" required></p>
+  <p><input type="submit" value="Multiply!"></p>
+</form>
