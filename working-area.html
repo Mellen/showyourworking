@@ -1,4 +1,14 @@
 <table ng-controller="StepController as stepCtl">
-  <tr><td></td><td colspan="{{stepCtl.n1predot}}"></td><td ng-repeat="n1 in firstNumber track by $index">{{n1}}</td><td colspan="{{stepCtl.n1postdot}}"></td></tr>
-  <tr><td>&times;</td><td colspan="{{stepCtl.n2predot + 1}}"></td><td ng-repeat="n2 in secondNumber track by $index">{{n2}}</td><td colspan="{{stepCtl.n2postdot}}"></td></tr>
+  <tr>
+    <td></td>
+    <td ng-repeat="i in stepCtl.generateRange(stepCtl.answerCharCount - (firstNumber.length - stepCtl.n2postdot)) track by $index">&nbsp;</td>
+    <td ng-repeat="n1 in firstNumber track by $index">{{n1}}</td>
+    <td ng-repeat="i in stepCtl.generateRange(stepCtl.n1postdot) track by $index"></td>
+  </tr>
+  <tr>
+    <td class="underline">&times;</td>
+    <td class="underline" ng-repeat="i in stepCtl.generateRange(stepCtl.answerCharCount - (secondNumber.length - stepCtl.n1postdot)) track by $index">&nbsp;</td>
+    <td class="underline" ng-repeat="n2 in secondNumber track by $index">{{n2}}</td>
+    <td class="underline" ng-repeat="i in stepCtl.generateRange(stepCtl.n2postdot) track by $index">&nbsp;</td>
+  </tr>
 </table>
