@@ -1,14 +1,26 @@
-<table ng-controller="StepController as stepCtl">
-  <tr>
-    <td></td>
-    <td ng-repeat="i in stepCtl.generateRange(stepCtl.answerCharCount - (firstNumber.length - stepCtl.n2postdot)) track by $index">&nbsp;</td>
-    <td ng-repeat="n1 in firstNumber track by $index">{{n1}}</td>
-    <td ng-repeat="i in stepCtl.generateRange(stepCtl.n1postdot) track by $index"></td>
-  </tr>
-  <tr>
-    <td class="underline">&times;</td>
-    <td class="underline" ng-repeat="i in stepCtl.generateRange(stepCtl.answerCharCount - (secondNumber.length - stepCtl.n1postdot)) track by $index">&nbsp;</td>
-    <td class="underline" ng-repeat="n2 in secondNumber track by $index">{{n2}}</td>
-    <td class="underline" ng-repeat="i in stepCtl.generateRange(stepCtl.n2postdot) track by $index">&nbsp;</td>
-  </tr>
-</table>
+<div ng-controller="StepController as stepCtl">
+  <table>
+    <tr>
+      <td></td>
+      <td ng-repeat="i in stepCtl.generateRange(stepCtl.answerCharCount - (firstNumber.length - stepCtl.n2postdot)) track by $index">&nbsp;</td>
+      <td ng-repeat="n1 in firstNumber track by $index">{{n1}}</td>
+      <td ng-repeat="i in stepCtl.generateRange(stepCtl.n1postdot) track by $index"></td>
+    </tr>
+    <tr>
+      <td class="underline">&times;</td>
+      <td class="underline" ng-repeat="i in stepCtl.generateRange(stepCtl.answerCharCount - (secondNumber.length - stepCtl.n1postdot)) track by $index">&nbsp;</td>
+      <td class="underline" ng-repeat="n2 in secondNumber track by $index">{{n2}}</td>
+      <td class="underline" ng-repeat="i in stepCtl.generateRange(stepCtl.n2postdot) track by $index">&nbsp;</td>
+    </tr>
+    <tr ng-repeat="i in stepCtl.rowCount() track by $index">
+      <td colspan="{{(stepCtl.answerCharCount+1) - stepCtl.steps[$index].length}}"></td>
+      <td ng-repeat="step in stepCtl.steps[$index]"><sup ng-hide="{{step.carry < 1}}">&swarr;{{step.carry}}</sup><sup ng-show="{{step.carry < 1}}">&nbsp;</sup>{{step.result}}</td>
+    </tr>
+  </table>
+  <p>
+    <button ng-hide="{{stepCtl.steps[0].length < 1}}">Previous Step</button> <button ng-click="stepCtl.nextStep()">Next Step</button>
+  </p>
+  <p>
+    <button ng-click="stepCtl.refresh()">New Multiplication</button>
+  </p>
+</div>

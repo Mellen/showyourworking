@@ -1,4 +1,20 @@
+table
+{
+    border-collapse: collapse;
+}
+
+td
+{
+    font-size:3em;
+}
+
 td.underline
 {
     border-bottom: 1px solid black;
+}
+
+sup
+{
+    font-size: 0.5em;
+    display: block;
 }

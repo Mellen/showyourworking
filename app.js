@@ -75,6 +75,100 @@
 			    {
 				return new Array(this.answerCharCount + 2);
 			    };
+
+			    this.rowCount = function()
+			    {
+				var c2 = $scope.secondNumber.match(/\d/g).length;
+				return new Array(c2);
+			    };
+
+			    this.refresh = function()
+			    {
+				window.location.reload();
+			    };
+
+			    this.nextStep = function()
+			    {
+				if(this.steps.length === 0)
+				{
+				    var newRow = [];
+				    var fnli = this.firstNumberParts.length - 1;
+				    var snli = this.secondNumberParts.length - 1;
+				    var fullResult = parseInt(this.firstNumberParts[fnli]) * parseInt(this.secondNumberParts[snli]);
+				    var carry = Math.floor(fullResult/10);
+				    var result = fullResult % 10;
+				    var step = {firstPartIndex:fnli, secondPartIndex:snli, result: result, carry: carry};
+				    newRow.push(step);
+				    if(fnli === 0)
+				    {
+					if(newRow[0].carry > 0)
+					{
+					    var carryStep = {firstPartIndex:0, secondPartIndex:snli, result: newRow[0].carry, carry:0};
+					    newRow.unshift(carryStep);
+					}
+				    }
+
+				    this.steps.push(newRow);
+				}
+				else
+				{
+				    var rowIndex = this.steps.length -1;
+				    var row = this.steps[rowIndex];
+
+				    var fni = row[0].firstPartIndex - 1;
+				    if(this.firstNumberParts[fni] === '.')
+				    {
+					fni--;
+				    }
+				    var sni = row[0].secondPartIndex;
+				    var insertRow = false;
+				    
+				    if(fni < 0)
+				    {
+					if(sni !== 0)
+					{
+					    fni = this.firstNumberParts.length - 1;
+					    sni--;
+					    if(this.secondNumberParts[sni] === '.')
+					    {
+						sni--;
+					    }
+					    row = [];
+					    for(var i = 0; i < (this.secondNumberParts.length-1) - sni; i++)
+					    {
+						row.unshift({firstPartIndex:fni , secondPartIndex: sni, result:0, carry:0});
+					    }
+					    insertRow = true;
+					}
+					else
+					{
+					    this.isMultiplying = false;
+					    return;
+					}
+				    }
+
+				    var fullResult = (parseInt(this.firstNumberParts[fni]) * parseInt(this.secondNumberParts[sni])) + row[0].carry;
+				    console.log(fullResult);
+				    var carry = Math.floor(fullResult/10);
+				    var result = fullResult % 10;
+				    var step = {firstPartIndex:fni, secondPartIndex:sni, result: result, carry: carry};
+				    row.unshift(step);
+
+ 				    if(fni === 0)
+				    {
+					if(row[0].carry > 0)
+					{
+					    var carryStep = {firstPartIndex:0, secondPartIndex:sni, result: row[0].carry, carry:0};
+					    row.unshift(carryStep);
+					}
+				    }
+				    
+				    if(insertRow)
+				    {
+					this.steps.push(row);
+				    }
+				}
+			    };
 			    
 			    function calculatePostDot(n1, n2)
 			    {
@@ -100,6 +194,7 @@
 			
 				return span;
 			    }
+			}
 		    ]
 		   );
      
