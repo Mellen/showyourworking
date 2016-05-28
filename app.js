@@ -43,6 +43,22 @@
 			    this.n1postdot = calculatePostDot($scope.firstNumber, $scope.secondNumber);
 			    this.n2postdot = calculatePostDot($scope.secondNumber, $scope.firstNumber);
 
+			    this.answerHasDP = this.firstNumberParts.indexOf('.') > -1 || this.secondNumberParts.indexOf('.') > -1;
+			    this.answerDPCount = 0;
+
+			    if(this.answerHasDP)
+			    {
+				if(this.firstNumberParts.indexOf('.') > -1)
+				{
+				    this.answerDPCount = $scope.firstNumber.split('.')[1].length;
+				}
+
+				if(this.secondNumberParts.indexOf('.') > -1)
+				{
+				    this.answerDPCount += $scope.secondNumber.split('.')[1].length;
+				}
+			    }
+
 			    this.answerCharCount = $scope.firstNumber.match(/\d/g).length + $scope.secondNumber.match(/\d/g).length;
 
 			    if($scope.firstNumber.indexOf('.') > -1 || $scope.secondNumber.indexOf('.') > -1)
@@ -134,7 +150,12 @@
 						sni--;
 					    }
 					    row = [];
-					    for(var i = 0; i < (this.secondNumberParts.length-1) - sni; i++)
+					    var zeroCount = (this.secondNumberParts.length-1) - sni;
+					    if(this.secondNumberParts.indexOf('.') > -1)
+					    {
+						zeroCount--;
+					    }
+					    for(var i = 0; i < zeroCount; i++)
 					    {
 						row.unshift({firstPartIndex:fni , secondPartIndex: sni, result:0, carry:0});
 					    }
@@ -154,6 +175,12 @@
 				    var step = {firstPartIndex:fni, secondPartIndex:sni, result: result, carry: carry};
 				    row.unshift(step);
 
+				    if(this.answerHasDP && row.length === this.answerDPCount)
+				    {
+					var dpStep = {firstPartIndex:fni, secondPartIndex:sni, result:'.', carry:carry};
+					row.unshift(dpStep);
+				    }
+				    
  				    if(fni === 0)
 				    {
 					if(row[0].carry > 0)
