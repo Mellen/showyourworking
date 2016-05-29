@@ -145,20 +145,24 @@
 					{
 					    fni = this.firstNumberParts.length - 1;
 					    sni--;
+
 					    if(this.secondNumberParts[sni] === '.')
 					    {
 						sni--;
 					    }
+					    
 					    row = [];
-					    var zeroCount = (this.secondNumberParts.length-1) - sni;
-					    if(this.secondNumberParts.indexOf('.') > -1)
-					    {
-						zeroCount--;
-					    }
+					    var zeroCount = this.steps.length;
 					    for(var i = 0; i < zeroCount; i++)
 					    {
 						row.unshift({firstPartIndex:fni , secondPartIndex: sni, result:0, carry:0});
+						if(this.answerHasDP && row.length === this.answerDPCount)
+						{
+						    var dpStep = {firstPartIndex:fni, secondPartIndex:sni, result:'.', carry:0};
+						    row.unshift(dpStep);
+						}
 					    }
+					    
 					    insertRow = true;
 					}
 					else
@@ -169,7 +173,6 @@
 				    }
 
 				    var fullResult = (parseInt(this.firstNumberParts[fni]) * parseInt(this.secondNumberParts[sni])) + row[0].carry;
-				    console.log(fullResult);
 				    var carry = Math.floor(fullResult/10);
 				    var result = fullResult % 10;
 				    var step = {firstPartIndex:fni, secondPartIndex:sni, result: result, carry: carry};
@@ -187,6 +190,24 @@
 					{
 					    var carryStep = {firstPartIndex:0, secondPartIndex:sni, result: row[0].carry, carry:0};
 					    row.unshift(carryStep);
+					}
+					var addDP = false;
+					while(row.length < this.answerDPCount)
+					{
+					    var zeroStep = {firstPartIndex:0, secondPartIndex:sni, result:0, carry:0};
+					    row.unshift(zeroStep);
+					    var addDP = true;
+					}
+					if(addDP)
+					{
+					    var dpStep = {firstPartIndex:fni, secondPartIndex:sni, result:'.', carry:0};
+					    row.unshift(dpStep);
+					}
+					if(row[0].result === '.')
+					{
+					    console.log('added zero');
+					    var zeroStep = {firstPartIndex:0, secondPartIndex:sni, result:0, carry:0};
+					    row.unshift(zeroStep);					    
 					}
 				    }
 				    
