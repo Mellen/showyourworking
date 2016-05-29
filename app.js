@@ -76,12 +76,14 @@
 				this.n1postdot++;
 			    }
 
-			    if(($scope.firstNumber[0] === '-' && $scope.secondNumber[0] !== '-') && ($scope.firstNumber[0] !== '-' && $scope.secondNumber[0] === '-'))
+			    this.isNegative = false;
+			    
+			    if(($scope.firstNumber[0] === '-' && $scope.secondNumber[0] !== '-') || ($scope.firstNumber[0] !== '-' && $scope.secondNumber[0] === '-'))
 			    {
 				this.answerCharCount++;
 				this.isNegative = true;
 			    }
-
+			    
 			    this.generateRange = function(size)
 			    {
 				return new Array(size);
@@ -115,12 +117,17 @@
 				    var result = fullResult % 10;
 				    var step = {firstPartIndex:fnli, secondPartIndex:snli, result: result, carry: carry};
 				    newRow.push(step);
-				    if(fnli === 0)
+				    if(fnli === 0 || (fnli === 1 && this.isNegative))
 				    {
 					if(newRow[0].carry > 0)
 					{
 					    var carryStep = {firstPartIndex:0, secondPartIndex:snli, result: newRow[0].carry, carry:0};
 					    newRow.unshift(carryStep);
+					}
+					if(this.isNegative)
+					{
+					    var negStep = {firstPartIndex:0, secondPartIndex:snli, result:'-', carry:0};
+					    newRow.unshift(negStep);
 					}
 				    }
 
@@ -132,7 +139,7 @@
 				    var row = this.steps[rowIndex];
 
 				    var fni = row[0].firstPartIndex - 1;
-				    if(this.firstNumberParts[fni] === '.')
+				    if(this.firstNumberParts[fni] === '.' || this.firstNumberParts[fni] === '-')
 				    {
 					fni--;
 				    }
@@ -151,6 +158,12 @@
 						sni--;
 					    }
 					    
+					    if(this.secondNumberParts[sni] === '-')
+					    {
+						this.isMultiplying = false;
+						return;
+					    }
+
 					    row = [];
 					    var zeroCount = this.steps.length;
 					    for(var i = 0; i < zeroCount; i++)
@@ -182,9 +195,10 @@
 				    {
 					var dpStep = {firstPartIndex:fni, secondPartIndex:sni, result:'.', carry:carry};
 					row.unshift(dpStep);
+					row[1].carry = 0;
 				    }
 				    
- 				    if(fni === 0)
+ 				    if(fni === 0 || (fni === 1 && this.isNegative))
 				    {
 					if(row[0].carry > 0)
 					{
@@ -205,9 +219,14 @@
 					}
 					if(row[0].result === '.')
 					{
-					    console.log('added zero');
 					    var zeroStep = {firstPartIndex:0, secondPartIndex:sni, result:0, carry:0};
 					    row.unshift(zeroStep);					    
+					}
+					
+					if(this.isNegative)
+					{
+					    var negStep = {firstPartIndex:0, secondPartIndex:sni, result:'-', carry:0};
+					    row.unshift(negStep);
 					}
 				    }
 				    
