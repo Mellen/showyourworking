@@ -12,9 +12,12 @@
       <td class="underline" ng-repeat="n2 in secondNumber track by $index">{{n2}}</td>
       <td class="underline" ng-repeat="i in stepCtl.generateRange(stepCtl.n2postdot) track by $index">&nbsp;</td>
     </tr>
-    <tr ng-repeat="i in stepCtl.rowCount() track by $index">
-      <td colspan="{{(stepCtl.answerCharCount+1) - stepCtl.steps[$index].length}}"></td>
-      <td ng-repeat="step in stepCtl.steps[$index]"><sup ng-hide="{{step.carry < 1}}">&swarr;{{step.carry}}</sup><sup ng-show="{{step.carry < 1}}">&nbsp;</sup>{{step.result}}</td>
+    <tr ng-repeat="row in stepCtl.steps">
+      <td colspan="{{((stepCtl.answerCharCount+1+stepCtl.extras) - row.length)}}"></td>
+      <td ng-repeat="step in row"><sup ng-hide="{{step.carry < 1}}">&swarr;{{step.carry}}</sup><sup ng-show="{{step.carry < 1}}">&nbsp;</sup>{{step.result}}</td>
+    </tr>
+    <tr>
+      
     </tr>
   </table>
   <p>

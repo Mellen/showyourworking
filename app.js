@@ -61,6 +61,13 @@
 
 			    this.answerCharCount = $scope.firstNumber.match(/\d/g).length + $scope.secondNumber.match(/\d/g).length;
 
+			    this.extras = this.n1postdot > this.n2postdot ? this.n1postdot : this.n2postdot;
+
+			    if(this.answerHasDP &&  (this.firstNumberParts.indexOf('.') === -1 || this.secondNumberParts.indexOf('.') === -1))
+			    {
+				this.extras++;
+			    }
+
 			    if($scope.firstNumber.indexOf('.') > -1 || $scope.secondNumber.indexOf('.') > -1)
 			    {
 				this.answerCharCount++;
@@ -130,6 +137,14 @@
 					    newRow.unshift(negStep);
 					}
 				    }
+
+				    if(this.answerHasDP && this.answerDPCount === 1)
+				    {
+					var dpStep = {firstPartIndex:fnli, secondPartIndex:snli, result:'.', carry:carry};
+					newRow.unshift(dpStep);
+					newRow[1].carry = 0;
+				    }
+
 
 				    this.steps.push(newRow);
 				}
