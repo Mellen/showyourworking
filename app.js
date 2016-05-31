@@ -119,7 +119,8 @@
 				{
 				    this.nextMultiStep();
 				}
-				else
+
+				if(!this.isMultiplying)
 				{
 				    this.nextAddStep();
 				}
@@ -132,8 +133,12 @@
 				if(this.answerHasDP && this.additionSteps.length === this.answerDPCount)
 				{
 				    step.result = '.';
-				    step.carry = this.additionSteps[1].carry;
-				    this.additionSteps[1].carry = 0;
+				    step.carry = this.additionSteps[0].carry;
+				    this.additionSteps[0].carry = 0;
+				}
+				else if(this.isNegative && this.additionSteps.length === (this.answerCharCount -2))
+				{
+				    step.result = '-';
 				}
 				else
 				{
@@ -142,15 +147,20 @@
 				    {
 					var row = this.steps[ri];
 					var index = (row.length - this.additionSteps.length) - 1;
-					console.log(index);
-					if(index < 0)
+					if(index < 0 || row[index].result === '-')
 					{
 					    continue;
 					}
 					sum += row[index].result;
 				    }
-				    step.result = sum % 10;
-				    step.carry = Math.floor(sum/10);
+				    var carry = 0;
+				    if(this.additionSteps.length > 0)
+				    {
+					carry = this.additionSteps[0].carry;
+				    }
+				    
+				    step.result = (sum + carry)%10;
+				    step.carry = Math.floor((sum + carry)/10);
 				}
 				this.additionSteps.unshift(step);
 			    };
@@ -263,7 +273,7 @@
 					    var carryStep = {firstPartIndex:0, secondPartIndex:sni, result: row[0].carry, carry:0};
 					    row.unshift(carryStep);
 					}
-					var addDP = false;
+					var addDP = (this.answerHasDP && row.length === this.answerDPCount);
 					while(row.length < this.answerDPCount)
 					{
 					    var zeroStep = {firstPartIndex:0, secondPartIndex:sni, result:0, carry:0};
@@ -291,6 +301,29 @@
 				    if(insertRow)
 				    {
 					this.steps.push(row);
+				    }
+				}
+			    };
+
+			    this.previousStep = function()
+			    {
+				if(!this.isMultiplying)
+				{
+				    this.additionSteps.shift();
+				    if(this.additionSteps.length === 0)
+				    {
+					this.isMultiplying = true;
+				    }
+				}
+				else
+				{
+				    var ri = this.steps.length -1;
+				    
+				    this.steps[ri].shift();
+				    
+				    if(this.steps[ri].length === 0)
+				    {
+					this.steps.pop();
 				    }
 				}
 			    };

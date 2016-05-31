@@ -24,7 +24,8 @@
     </tr>
   </table>
   <p>
-    <button ng-hide="{{stepCtl.steps[0].length < 1}}">Previous Step</button> <button ng-click="stepCtl.nextStep()">Next Step</button>
+    <button ng-hide="stepCtl.steps.length === 0" ng-click="stepCtl.previousStep()">Previous Step</button>
+    <button ng-hide="stepCtl.additionSteps.length >= stepCtl.answerCharCount" ng-click="stepCtl.nextStep()">Next Step</button>
   </p>
   <p>
     <button ng-click="stepCtl.refresh()">New Multiplication</button>
