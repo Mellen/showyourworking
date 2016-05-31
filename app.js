@@ -136,7 +136,7 @@
 				    step.carry = this.additionSteps[0].carry;
 				    this.additionSteps[0].carry = 0;
 				}
-				else if(this.isNegative && this.additionSteps.length === (this.answerCharCount -2))
+				else if(this.isNegative && this.additionSteps.length === (this.answerCharCount -1))
 				{
 				    step.result = '-';
 				}
@@ -266,7 +266,7 @@
 					row[1].carry = 0;
 				    }
 				    
- 				    if(fni === 0 || (fni === 1 && this.isNegative))
+ 				    if(fni === 0 || (fni === 1 && this.firstNumberParts[0] === '-'))
 				    {
 					if(row[0].carry > 0)
 					{

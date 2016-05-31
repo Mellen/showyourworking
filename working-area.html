@@ -1,4 +1,7 @@
 <div ng-controller="StepController as stepCtl">
+  <p>
+    <button ng-click="stepCtl.refresh()">New Multiplication</button>
+  </p>
   <table>
     <tr>
       <td></td>
@@ -19,15 +22,12 @@
     <tr>
       <td colspan="{{((stepCtl.answerCharCount+1+stepCtl.extras) - stepCtl.additionSteps.length)}}" class="overline"></td>
       <td ng-repeat="step in stepCtl.additionSteps" class="overline">
-	<sup ng-hide="{{step.carry < 1}}">&swarr;{{step.carry}}</sup><sup ng-show="{{step.carry < 1}}">&nbsp;</sup>{{step.result}}
+	<sup ng-hide="step.carry < 1">&swarr;{{step.carry}}</sup><sup ng-show="step.carry < 1">&nbsp;</sup>{{step.result}}
       </td>
     </tr>
   </table>
   <p>
     <button ng-hide="stepCtl.steps.length === 0" ng-click="stepCtl.previousStep()">Previous Step</button>
     <button ng-hide="stepCtl.additionSteps.length >= stepCtl.answerCharCount" ng-click="stepCtl.nextStep()">Next Step</button>
-  </p>
-  <p>
-    <button ng-click="stepCtl.refresh()">New Multiplication</button>
   </p>
 </div>
