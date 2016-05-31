@@ -13,6 +13,11 @@ td.underline
     border-bottom: 1px solid black;
 }
 
+td.overline
+{
+    border-top: 1px solid black;
+}
+
 sup
 {
     font-size: 0.5em;

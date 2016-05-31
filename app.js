@@ -39,6 +39,7 @@
 			    this.isMultiplying = true;
 
 			    this.steps = [];
+			    this.additionSteps = [];
 
 			    this.n1postdot = calculatePostDot($scope.firstNumber, $scope.secondNumber);
 			    this.n2postdot = calculatePostDot($scope.secondNumber, $scope.firstNumber);
@@ -113,6 +114,48 @@
 			    };
 
 			    this.nextStep = function()
+			    {
+				if(this.isMultiplying)
+				{
+				    this.nextMultiStep();
+				}
+				else
+				{
+				    this.nextAddStep();
+				}
+			    }
+
+			    this.nextAddStep = function()
+			    {
+				var step = {result:0, carry:0};
+
+				if(this.answerHasDP && this.additionSteps.length === this.answerDPCount)
+				{
+				    step.result = '.';
+				    step.carry = this.additionSteps[1].carry;
+				    this.additionSteps[1].carry = 0;
+				}
+				else
+				{
+				    var sum = 0;
+				    for(var ri = 0; ri < this.steps.length; ri++)
+				    {
+					var row = this.steps[ri];
+					var index = (row.length - this.additionSteps.length) - 1;
+					console.log(index);
+					if(index < 0)
+					{
+					    continue;
+					}
+					sum += row[index].result;
+				    }
+				    step.result = sum % 10;
+				    step.carry = Math.floor(sum/10);
+				}
+				this.additionSteps.unshift(step);
+			    };
+			    
+			    this.nextMultiStep = function()
 			    {
 				if(this.steps.length === 0)
 				{

@@ -17,7 +17,10 @@
       <td ng-repeat="step in row"><sup ng-hide="{{step.carry < 1}}">&swarr;{{step.carry}}</sup><sup ng-show="{{step.carry < 1}}">&nbsp;</sup>{{step.result}}</td>
     </tr>
     <tr>
-      
+      <td colspan="{{((stepCtl.answerCharCount+1+stepCtl.extras) - stepCtl.additionSteps.length)}}" class="overline"></td>
+      <td ng-repeat="step in stepCtl.additionSteps" class="overline">
+	<sup ng-hide="{{step.carry < 1}}">&swarr;{{step.carry}}</sup><sup ng-show="{{step.carry < 1}}">&nbsp;</sup>{{step.result}}
+      </td>
     </tr>
   </table>
   <p>
